@@ -1,13 +1,13 @@
 # Data Analyst
 
-### Techinical Skills: SQL, Python, Snowflake, Power BI, Excel, AWS, S3, Jupyter Notebooks, Apache Zeppelin
+## Techinical Skills: SQL, Python, Snowflake, Power BI, Excel, AWS, S3, Jupyter Notebooks, Apache Zeppelin
 
-### Education
+## Education
 - M.S., Library & Information Science | North Carolina Central University (_May 2020_)
 - B.S., Education | Appalachian State University (_May 2014_)
 
-### Work Experience
-Merchandising Data Analyst @ Advance Auto Parts 
+## Work Experience
+### Merchandising Data Analyst @ Advance Auto Parts 
 
 In my current role, I focus on leveraging data analysis to drive product assortment strategies and business optimization. I analyze and mine data using statistical methods to identify patterns and insights related to our product assortment. My responsibilities include communicating and collaborating cross-functionally with team members to pinpoint and address business issues. I develop strong partnerships with business management teams and actively participate in meetings to measure and optimize the effectiveness of our product assortment.
 
