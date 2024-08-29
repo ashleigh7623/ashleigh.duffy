@@ -16,16 +16,12 @@ I handle data preparation and cleaning using Python, SQL, and Excel, which enabl
 
 ##### A Few Projects: 
 - Business Recommendations:
-
 In this project, I provided data-driven recommendations to optimize product stocking locations across the supply chain. The objective was to ensure that products didn't remain unsold on shelves too long, thereby avoiding financial losses and improving inventory management.
-
-Key tasks included:
-
-  - Analyzing data to determine the best location for each product, including moving items between the factory, warehouse, and stores.
-  - Using SQL to compile and clean large datasets from various sources, including tables and CSV files.
-  - Automating data processing and recommendations using Python, which involved looping through product names and life cycles, and exporting results into organized Excel files using Openpyxl.
+   -  Analyzing data to determine the best location for each product, including moving items between the factory, warehouse, and stores.
+   - Using SQL to compile and clean large datasets from various sources, including tables and CSV files.
+   - Automating data processing and recommendations using Python, which involved looping through product names and life cycles, and exporting results into organized Excel files using Openpyxl.
 Summarizing feedback on recommendations and refining data accordingly.
-  - Creating a Power BI report to visualize acceptance rates and statistics, aiding leadership in making informed business decisions.
+   - Creating a Power BI report to visualize acceptance rates and statistics, aiding leadership in making informed business decisions.
     
 The project enhanced the company's ability to allocate products efficiently and prioritize inventory investments.
 
