@@ -1,6 +1,7 @@
 # Data Analyst
 
-## Techinical Skills: SQL, Python, Snowflake, Power BI, Excel, AWS, S3, Jupyter Notebooks, Apache Zeppelin
+## Technical Skills: 
+SQL, Python, Snowflake, Power BI, Excel, AWS, S3, Jupyter Notebooks, Apache Zeppelin
 
 ## Education
 - M.S., Library & Information Science | North Carolina Central University (_May 2020_)
