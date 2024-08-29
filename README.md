@@ -15,7 +15,20 @@ In my current role, I focus on leveraging data analysis to drive product assortm
 I handle data preparation and cleaning using Python, SQL, and Excel, which enables me to automate routine tasks and optimize reports. Additionally, I create interactive PowerBI reports by using storytelling features such as drill through filters, bookmarks, themes, and selection panes, allowing business users to gather data insights quickly and ensuring that analytical findings and assortment recommendations are presented clearly and concisely to key stakeholders. My technical skills in SQL, Python, and Microsoft Power BI, combined with my proficiency in data analysis and effective communication, allow me to drive actionable insights and enhance decision-making processes.
 
 ##### A Few Projects: 
-- project 1
+- Business Recommendations:
+
+In this project, I provided data-driven recommendations to optimize product stocking locations across the supply chain. The objective was to ensure that products didn't remain unsold on shelves too long, thereby avoiding financial losses and improving inventory management.
+
+Key tasks included:
+
+  - Analyzing data to determine the best location for each product, including moving items between the factory, warehouse, and stores.
+  - Using SQL to compile and clean large datasets from various sources, including tables and CSV files.
+  - Automating data processing and recommendations using Python, which involved looping through product names and life cycles, and exporting results into organized Excel files using Openpyxl.
+Summarizing feedback on recommendations and refining data accordingly.
+  - Creating a Power BI report to visualize acceptance rates and statistics, aiding leadership in making informed business decisions.
+    
+The project enhanced the company's ability to allocate products efficiently and prioritize inventory investments.
+
 - project 2
 
 
