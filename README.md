@@ -35,10 +35,29 @@ The project enhanced the company's ability to allocate products efficiently and 
 - When completed quarterly, one can track the performance of investments and the amount of inventory being introduced into the supply chain.
 - Helps create a system to check obsolete inventory and move it to the end of it's shipping location lifecycle (from store to factory) on a regular cadence.
 
-### Product Coverages and Gaps:
-Task: Create a coverage report showing 
+### Coverage Report Analysis:
+The primary goal of this project is to create a comprehensive Coverage Report that evaluates the availability of parts in relation to vehicles identified as "VIO" (Vehicles in Operation). The analysis will determine whether the necessary SKUs are present in our catalog and assess the coverage gaps based on their regional distribution and stocking location.
 
 #### Key Steps Taken:
+1. **Catalog Verification**:
+   - **Check SKU Availability**: Determine if the SKUs for the VIO vehicles are present in our catalog. For each vehicle, identify if its corresponding part is listed as available and determine if it is an existing part for that vehicle.
+   - **Identify Catalog Gaps**: Highlight which parts we have SKUs that are missing from the catalog entirely, indicating a lack of parts for certain vehicles.
 
+2. **Coverage Analysis**:
+   - **Percentage of Coverage**: Calculate the percentage of SKUs available for each vehicle model down to it's specific fuel. This will help in understanding the extent of our coverage.
+   - **Regional Distribution**: Analyze the geographic distribution of SKUs in relation to VIO. Identify if certain parts are available only in specific regions or stores, which may indicate potential coverage gaps or missed opportunities.
+
+3. **Gap Assessment**:
+   - **No SKU Availability**: Flag vehicles for which no SKU exists in our catalog.
+   - **Limited Regional Coverage**: Identify situations where SKUs are available but limited to only one store or region, which could affect overall coverage and availability.
+   - 
 #### Recommendations & Next Steps
-- takeways
+- This report will help in identifying areas where we may be missing out on potential sales and ensure that our catalog is adequately stocked to meet the needs of our VIO vehicles.
+- Are we stocking this part in the area showing a high VIO? Are we overstocking a SKU or part in an area that has a low VIO? Do we even have a SKU in our catalog that fits this part?
+
+##### Example of POWER BI Report:
+- **Coverage Report**: A detailed report showing whether we have the necessary SKUs for VIO vehicles, including:
+  - A list of missing SKUs.
+  - The percentage of available SKUs for each vehicle.
+  - A breakdown of SKU availability by region or store.
+
