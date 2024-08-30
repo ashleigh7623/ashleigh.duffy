@@ -56,6 +56,8 @@ The primary goal of this project is to create a comprehensive Coverage Report th
 - Are we stocking this part in the area showing a high VIO? Are we overstocking a SKU or part in an area that has a low VIO? Do we even have a SKU in our catalog that fits this part?
 
 ##### Example of POWER BI Report:
+![PartialSnip_VIOCovRep_PBI](assets/img/vio1.PNG)
+
 - **Coverage Report**: A detailed report showing whether we have the necessary SKUs for VIO vehicles, including:
   - A list of missing SKUs.
   - The percentage of available SKUs for each vehicle.
