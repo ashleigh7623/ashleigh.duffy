@@ -1,0 +1,246 @@
+# Defined Functions
+
+#######################################################
+
+import time
+from datetime import datetime as dt
+t = time.localtime()
+timestamp = time.strftime('%Y-%m-%d', t) #add the timestamp to the new combined saved file
+
+
+##################################
+#Import CSV 
+##################################
+
+def CSVimport(path, CSVname, tableName, show=False):
+
+    df_pd = pd.read_csv(f'{path}{CSVname}.csv', low_memory=False)
+    df_pd.columns = df_pd.columns.str.upper()
+    df = session.create_dataframe(df_pd)
+
+    df.createOrReplaceTempView(tableName)
+    print("Imported CSV:",tableName)
+    print(df.count())
+
+    if show == True:
+        df.show(1)
+
+    var_qst = dt.now()
+    query_start_time = var_qst
+    var_query_end_time = dt.now()
+    var_elapsed_time = var_query_end_time - query_start_time
+    print("\n" + str(var_query_end_time).split(" ")[0] + " " + dt.today().strftime("%I:%M %p") + " - run time: " + str(var_elapsed_time).split(".")[0])
+
+    
+##################################
+#Export DF to Local CSV
+##################################
+
+path = f'/Users/ashleigh.duffy/Downloads/slc_jupyter/rdc/'
+def saveExport(df, tableName, sheetName, show=False):
+
+    df.createOrReplaceTempView(tableName)
+    print("Data Exported to Path: ", path)
+    print(df.count())
+    #display(HTML("<style>pre { white-space: pre !important; }</style>"))
+
+    if show == True:
+        df.show(1)
+
+    var_qst = dt.now()
+    query_start_time = var_qst
+    var_query_end_time = dt.now()
+    var_elapsed_time = var_query_end_time - query_start_time
+    print("\n" + str(var_query_end_time).split(" ")[0] + " " + dt.today().strftime("%I:%M %p") + " - run time: " + str(var_elapsed_time).split(".")[0])
+    
+    df = df.to_pandas()
+    df = df.rename(columns=lambda name: name.replace('_', ' '))
+    df.columns = df.columns.str.upper()
+    df.to_excel(f'{path}{tableName}-{timestamp}.xlsx', index=False, sheet_name= sheetName)
+
+ 
+##################################
+#TempView
+##################################
+
+def saveTemp(df, tableName, show=False):
+    df.createOrReplaceTempView(tableName)
+    print("New View: ",tableName)
+
+    print(df.count())
+
+    if show == True:
+        df.show(1)
+
+    var_qst = dt.now()
+    query_start_time = var_qst
+    var_query_end_time = dt.now()
+    var_elapsed_time = var_query_end_time - query_start_time
+    print("\n" + str(var_query_end_time).split(" ")[0] + " " + dt.today().strftime("%I:%M %p") + " - run time: " + str(var_elapsed_time).split(".")[0])
+___________________________________________________________________________________________________________
+
+
+#Stocking Location - HIST 
+
+df = session.sql("""
+with current_pd as (
+ 
+    Select
+        sequence_id as cur_pd_seq_id
+        
+    From PDATABASE1.DATABASE1.TABLE1
+ 
+    Where
+        current_date >= start_date
+        and current_date <= end_date
+ 
+),
+
+ max_date as (
+
+    select 
+        sku_number
+        ,max(stock_loc_change_date) as most_recent_change_date
+        
+    from
+        PDATABASE1.DATABASE2.TABLE2
+        
+    
+    group by
+        sku_number
+        
+),
+
+max_yr_pd as (
+
+    Select
+        h.sku_number
+        ,max(pcal.sequence_id) as max_pd_seq_id
+    
+    From  PDATABASE1.DATABASE2.TABLE2 h
+
+    Left Join PDATABASE1.DATABASE1.TABLE1 pcal 
+        on pcal.fiscal_year = h.cal_year
+        and pcal.fiscal_period = h.cal_period
+    
+    Inner Join max_date mx on 
+        mx.sku_number = h.sku_number
+        and mx.most_recent_change_date = h.stock_loc_change_date
+    
+    Group By
+        h.sku_number
+    
+)
+
+select 
+    h.sku_number as aap_sku_number
+    ,h.stocking_location
+    ,h.cal_year
+    ,h.cal_period 
+    ,h.stock_loc_change_date as most_recent_change_date
+    ,pcal.sequence_id as epoch_sequence
+    ,cur_pd_seq_id
+    ,(cur_pd_seq_id - sequence_id) as dif_period
+    
+from
+       PDATABASE1.DATABASE2.TABLE2 h 
+
+Left Join PDATABASE1.DATABASE1.TABLE1 pcal 
+        on pcal.fiscal_year = h.cal_year
+        and pcal.fiscal_period = h.cal_period
+
+Inner Join max_date mx on 
+    mx.sku_number = h.sku_number
+    and mx.most_recent_change_date = h.stock_loc_change_date
+
+Inner Join max_yr_pd mx_pd on
+    mx_pd.sku_number = h.sku_number
+    and mx_pd.max_pd_seq_id = pcal.sequence_id
+
+Cross Join current_pd
+
+
+        
+""")
+
+saveTemp(df, 'slc_date', show=False)
+___________________________________________________________________________________________________________
+
+#Importing Previous Quarter's Recommendations
+
+# creating a variable to house query start time
+var_qst = dt.now()
+
+# using pandas to read in the CSV file
+df_pd = pd.read_csv('file.csv', low_memory=False)
+
+# need to ensure the column headers are uppercase for it to work properly in snowpark
+df_pd = df_pd.rename(columns=lambda name: name.replace(' ', '_'))
+df_pd.columns = df_pd.columns.str.upper()
+
+# creating a snowpark dataframe
+df = session.create_dataframe(df_pd)
+
+# creating a temp view within snowpark
+saveImport(df, 'Q1_24_responses_import')
+
+
+df = session.sql("""
+
+select aap_sku_number as q1_actioned_skus
+
+from Q1_24_responses_import 
+
+where requested_action LIKE 'APPROVE%' or requested_action LIKE 'DECLINE%'
+
+
+
+""")
+
+
+saveTemp(df, 'Q1_24_responses', show=False)
+
+
+
+
+
+
+___________________________________________________________________________________________________________
+##Creating 4 tabs by sm and exporting as one file
+
+
+tab_list = ['FDO_MST', 'PDQ_MST', 'PDQ_FDO', 'MST_FDO']
+for name in sm_list:
+    director_name = session.sql(f""" SELECT director FROM director_sm_list WHERE section_manager = '{name}'""").collect()[0]["director"]
+    # director_name = director_list["director"]
+    path = f'location/Q1/split/{director_name}/{name}/'
+    save_path = f'location/{director_name}/SLC Report-{name}'
+    file_path = f'{save_path}.xlsx'
+    os.makedirs(path)
+    os.makedirs(save_path)
+    
+    for tab in tab_list:
+    
+        df_test = session.sql(f"""
+            SELECT * FROM {tab}
+            WHERE section_manager = '{name}'
+            """)
+        df_test = df_test.to_pandas()
+
+        df_test = df_test.rename(columns=lambda name: name.replace('_', ' '))
+        df_test.columns = df_test.columns.str.upper()
+        
+        # df_test.to_csv(f'location/Trash/slc_test/{name}/{tab}.csv', index=False, sep='|')
+        df_test.to_excel(f'{path}{tab}.xlsx')
+        
+        
+    fileList = os.listdir(f"{path}")
+    excelWriter = pd.ExcelWriter(file_path, engine='openpyxl')
+    
+    for file in fileList:
+        df = pd.read_excel(f'{path}'+file)
+        df.to_excel(excelWriter,sheet_name=file.replace('.xlsx', ''),index=False)
+     
+    excelWriter.close() 
+
+    format_sm_files(file_path)
