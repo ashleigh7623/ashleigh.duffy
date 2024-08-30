@@ -1,7 +1,7 @@
 # Data Analyst
 
 ### Technical Skills: 
-SQL, Python, Snowflake, Power BI, Excel, AWS, S3, Jupyter Notebooks, Apache Zeppelin
+**SQL, Python, Snowflake, Power BI, Excel, AWS, S3, Jupyter Notebooks, Apache Zeppelin**
 
 ## Education
 - M.S., Library & Information Science | North Carolina Central University (_May 2020_)
@@ -39,15 +39,15 @@ The project enhanced the company's ability to allocate products efficiently and 
 The primary goal of this project is to create a comprehensive Coverage Report that evaluates the availability of parts in relation to vehicles identified as "VIO" (Vehicles in Operation). The analysis will determine whether the necessary SKUs are present in our catalog and assess the coverage gaps based on their regional distribution and stocking location.
 
 #### Key Steps Taken:
-1. **Catalog Verification**:
+- **Catalog Verification**:
    - **Check SKU Availability**: Determine if the SKUs for the VIO vehicles are present in our catalog. For each vehicle, identify if its corresponding part is listed as available and determine if it is an existing part for that vehicle.
    - **Identify Catalog Gaps**: Highlight which parts we have SKUs that are missing from the catalog entirely, indicating a lack of parts for certain vehicles.
 
-2. **Coverage Analysis**:
+- **Coverage Analysis**:
    - **Percentage of Coverage**: Calculate the percentage of SKUs available for each vehicle model down to it's specific fuel. This will help in understanding the extent of our coverage.
    - **Regional Distribution**: Analyze the geographic distribution of SKUs in relation to VIO. Identify if certain parts are available only in specific regions or stores, which may indicate potential coverage gaps or missed opportunities.
 
-3. **Gap Assessment**:
+- **Gap Assessment**:
    - **No SKU Availability**: Flag vehicles for which no SKU exists in our catalog.
    - **Limited Regional Coverage**: Identify situations where SKUs are available but limited to only one store or region, which could affect overall coverage and availability.
    - 
@@ -59,7 +59,7 @@ The primary goal of this project is to create a comprehensive Coverage Report th
 ![PartialSnip_VIOCovRep_PBI](assets/img/vio1.PNG)
 
 - **Coverage Report**: A detailed report showing whether we have the necessary SKUs for VIO vehicles, including:
-  - A list of missing SKUs.
-  - The percentage of available SKUs for each vehicle.
-  - A breakdown of SKU availability by region or store.
+  - A list of missing Parts with the related VIO.
+  - The percentage of available SKUs for each vehicle/part.
+  - A breakdown of SKU availability by region and stocking location.
 
