@@ -20,6 +20,7 @@ As a Media Data Specialist, I specialized in transforming raw data into actionab
 
 ## A Few Projects: 
 ### Stocking Location Recommendations: 
+[Query Example](https://github.com/ashleigh7623/ashleigh.duffy/blob/be195e78c28ae1ae855134f3f8c42cdae4097a00/assets/projects/stocking_example_segment)
 In this project, I provided data-driven recommendations to optimize product stocking locations across the supply chain. The objective was to ensure that products didn't remain unsold on shelves too long, thereby avoiding financial losses and improving inventory management.
 The project enhanced the company's ability to allocate products efficiently and prioritize inventory investments.
 #### Key Steps Taken:
