@@ -32,8 +32,8 @@ The project enhanced the company's ability to allocate products efficiently and 
    - Developed a Power BI report to visualize acceptance rates and statistics, aiding leadership in making informed business decisions.
 
 #### Recommendations & Next Steps
-- takeways
-
+- When completed quarterly, one can track the performance of investments and the amount of inventory being introduced into the supply chain.
+- Helps create a system to check obsolete inventory and move it to the end of it's shipping location lifecycle (from store to factory) on a regular cadence.
 
 ### Product Coverages and Gaps:
 Task: Create a coverage report showing 
