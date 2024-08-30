@@ -1,0 +1,168 @@
+WITH bundle_base AS (
+
+    SELECT
+        sbb.primary_sku_number
+        ,sbb.secondary_sku_number
+        ,sbpg.merchandise_group_desc AS secondary_bpg
+        ,sbpg.merchandise_department_desc AS secondary_dept
+        ,sbpg.merchandise_class_desc AS secondary_class
+        ,sbpg.merchandise_subclass_desc AS secondary_subclass
+
+    FROM PDB1.DB3.sku_bundle_base sbb
+
+    LEFT JOIN 
+        PDB1.DB1.sku_base_product_group sbpg
+            ON sbb.secondary_sku_number = sbpg.sku_number
+
+)
+
+
+, currently_attached_view_with_srb_assortment_sales_vio AS (
+
+SELECT 
+    nvl(sum
+        (case when v2.total_vio is not null 
+            then v2.total_vio else 0 end)
+                /greatest(sum(v1.total_vio),1),0) 
+                    as pct_vehicle_overlap
+    ,bb.primary_sku_number
+    ,bb.secondary_sku_number
+    ,NVL(s1_cmb_pct,0) AS primary_combined_pct
+
+FROM bundle_base bb
+
+    LEFT JOIN
+        PDB1.DB1.SKU_ACES s1
+        
+        ON
+            s1.sku_number = bb.primary_sku_number
+    
+    LEFT OUTER JOIN 
+        PDB1.DB1.SKU_ACES s2 
+        
+        ON 
+            s1.base_vehicle_id = s2.base_vehicle_id
+        AND 
+            s2.sku_number = bb.secondary_sku_number
+    
+     
+    INNER JOIN 
+        PDB1.DB1.VIO_ACES_FULL v1 
+        
+        ON 
+            s1.base_vehicle_id = v1.base_vehicle_id
+    
+    
+    LEFT OUTER JOIN 
+        PDB1.DB1.VIO_ACES_FULL v2 
+        
+        ON 
+            s2.base_vehicle_id = v2.base_vehicle_id
+        AND 
+            v1.sub_model_id = NVL(v2.sub_model_id,v1.sub_model_id)
+        AND 
+            v1.engine_base_id = NVL(v2.engine_base_id,v1.engine_base_id)
+        AND 
+            v1.fuel_type_id = NVL(v2.fuel_type_id,v1.fuel_type_id)
+
+    LEFT JOIN 
+    PDB1.DB2.VW_ATTACHMENT_BASE_DATA abd
+    
+        ON 
+            bb.primary_sku_number = abd.sku1
+        AND
+            bb.secondary_sku_number = abd.sku2
+        
+    WHERE 
+        s1.sku_number = bb.primary_sku_number
+    
+    GROUP BY
+        bb.primary_sku_number
+        ,bb.secondary_sku_number
+        ,s1_cmb_pct
+
+)
+
+
+, currently_attached_view_with_srb_assortment_sales_vio_2 AS (
+
+    SELECT 
+        bb.*
+        ,vov.pct_vehicle_overlap
+        ,vov.primary_combined_pct
+        
+    FROM
+        bundle_base bb
+    
+    LEFT JOIN
+        currently_attached_view_with_srb_assortment_sales_vio vov
+        
+        ON
+            vov.primary_sku_number = bb.primary_sku_number
+        AND 
+            vov.secondary_sku_number = bb.secondary_sku_number
+
+
+)
+
+, supper_session AS (
+
+SELECT 
+    DISTINCT new_sku AS aap_sku_number 
+FROM PDB1.DB2.VW_SUPERSESSION_CLEAN_LIST
+
+    UNION
+    
+SELECT 
+    DISTINCT old_sku AS aap_sku_number 
+FROM PDB1.DB2.VW_SUPERSESSION_CLEAN_LIST
+
+)
+
+,recommended_action AS (
+
+    SELECT 
+        CASE 
+            WHEN sd1.discontinued_flg = 'Y'
+                THEN 'BUNDLE ISSUE: Primary Discontinued'
+            WHEN sd1.mpog_description NOT LIKE 'PTS%'
+                THEN 'BUNDLE ISSUE: Primary is Not a PTS MPOG'
+            WHEN ss1.aap_sku_number IS NOT NULL
+                THEN 'BUNDLE ISSUE:Primary Part of a Supersession'        
+            WHEN sd2.discontinued_flg = 'Y'
+                THEN 'BUNDLE ISSUE:Secondary Discontinued'        
+            WHEN sd2.mpog_description NOT LIKE 'PTS%'
+                THEN 'BUNDLE ISSUE: Secondary is Not a PTS MPOG'        
+            WHEN ss2.aap_sku_number IS NOT NULL
+                THEN 'BUNDLE ISSUE: Secondary Part of a Supersession'        
+            WHEN v2.primary_combined_pct < .15
+                THEN 'REMOVE - Very Low Combined Sales Percentage'
+            WHEN v2.pct_vehicle_overlap < .25
+                AND v2.primary_combined_pct < .30
+                THEN 'REMOVE - Low Vehicle Overlap, Low Combined Sales Percentage'
+            ELSE NULL
+            END AS recommended_action
+        ,CONCAT(v2.primary_sku_number,'_',v2.secondary_sku_number) AS sku_id
+        ,v2.primary_sku_number
+        ,v2.secondary_sku_number
+        ,v2.secondary_bpg
+        ,v2.secondary_dept
+        ,v2.secondary_class
+        ,v2.secondary_subclass
+
+    FROM currently_attached_view_with_srb_assortment_sales_vio_2 v2
+ 
+    LEFT JOIN PDB1.DB1.SKU_DATA sd1
+        ON v2.primary_sku_number = sd1.sku_number
+        
+    LEFT JOIN PDB1.DB1.SKU_DATA sd2
+        ON v2.secondary_sku_number = sd2.sku_number    
+
+    LEFT JOIN supper_session ss1
+        ON v2.primary_sku_number = ss1.aap_sku_number
+
+    LEFT JOIN supper_session ss2
+        ON v2.secondary_sku_number = ss2.aap_sku_number       
+)
+
+SELECT * FROM recommended_action
