@@ -62,4 +62,14 @@ The primary goal of this project is to create a comprehensive Coverage Report th
   - A list of missing Parts with the related VIO.
   - The percentage of available SKUs for each vehicle/part.
   - A breakdown of SKU availability by region and stocking location.
+ 
+
+## A Few "Just-for-Fun" Projects: 
+
+### Olympic Medals by Continent
+#### A Panel Interactive Dashobard Showing:
+- Various plots showing medals counts by continent with a slider bar to filter with years.
+- HVPlot & Widgets/Tabulator/Buttons were used in Jupyterlab to create this project.
+  -  Jupyter Notebook can be found [HERE](https://github.com/ashleigh7623/ashleigh.duffy/blob/6555c503ebefefba5a3a1768301ca5504e1883e8/assets/projects/OlympicMedals_Dashboard.ipynb).
+![Panel Dashobard](assets/img/Panel_Medals_Dashboard.png)
 
